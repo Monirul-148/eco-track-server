@@ -49,6 +49,17 @@ async function run() {
   }
 });
 
+app.get("/api/tips", async (req, res) => {
+  try {
+    const db = client.db("model-db");
+    const tipsCollection = db.collection("tips");
+    const result = await tipsCollection.find().toArray();
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: "Error fetching tips", error });
+  }
+});
+
 
 
 app.get("/api/stats", (req, res) => res.json({ users: 10 }));
