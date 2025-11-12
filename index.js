@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const { MongoClient, ServerApiVersion } = require('mongodb');
+
 const app = express()
 const port = 3000
 
@@ -35,9 +36,14 @@ async function run() {
         const result = await modelCollection.find().toArray()
         res.send(result)
     })
+    
+    // ***
 
 
 
+
+app.get("/api/stats", (req, res) => res.json({ users: 10 }));
+app.get("/api/my-activities", (req, res) => res.json([]));
 
 
     await client.db("admin").command({ ping: 1 });
@@ -47,6 +53,8 @@ async function run() {
     // await client.close();
   }
 }
+
+
 run().catch(console.dir);
 
 
