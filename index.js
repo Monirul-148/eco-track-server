@@ -38,7 +38,16 @@ async function run() {
     })
     
     // ***
-
+     app.get("/api/user-challenges", async (req, res) => {
+  try {
+    const db = client.db("model-db");
+    const userChallengesCollection = db.collection("userChallenges");
+    const result = await userChallengesCollection.find().toArray();
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: "Error fetching user challenges", error });
+  }
+});
 
 
 
