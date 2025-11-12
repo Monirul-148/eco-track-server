@@ -60,6 +60,15 @@ app.get("/api/tips", async (req, res) => {
   }
 });
 
+app.get("/api/events", async (req, res) => {
+  try {
+    const events = await db.collection("events").find().limit(4).toArray();
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 
 app.get("/api/stats", (req, res) => res.json({ users: 10 }));
