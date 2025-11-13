@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
-
+require("dotenv").config()
 const app = express();
 const port = 3000;
 
@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 
 const uri =
-  "mongodb+srv://ecotrackUserServer:xKldrRJrIuQOKgAP@cluster0.luugan2.mongodb.net/?appName=Cluster0";
+  `mongodb+srv://ecotrackUserServer:xKldrRJrIuQOKgAP@cluster0.luugan2.mongodb.net/?appName=Cluster0`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -25,20 +25,18 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    //  Connect to MongoDB
-    await client.connect();
+    
+    // await client.connect();
     console.log(" Connected to MongoDB!");
-
-    //  Database reference
     const db = client.db("model-db");
 
-    //  Routes
+    
     app.get("/models", async (req, res) => {
       const result = await db.collection("models").find().toArray();
       res.send(result);
     });
 
-    // --- USER CHALLENGES ---
+    
     app.get("/api/user-challenges", async (req, res) => {
       try {
         const result = await db.collection("userChallenges").find().toArray();
@@ -48,16 +46,18 @@ async function run() {
       }
     });
 
-    // --- TIPS ---
+    
     app.get("/api/tips", async (req, res) => {
-      try {
-        const result = await db.collection("tips").find().limit(5).toArray(); 
-      } catch (error) {
-        res.status(500).send({ message: "Error fetching tips", error });
-      }
-    });
+  try {
+    const result = await db.collection("tips").find().limit(5).toArray();
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: "Error fetching tips", error });
+  }
+});
 
-    // --- EVENTS ---
+
+  
     app.get("/api/events", async (req, res) => {
       try {
         const result = await db.collection("events").find().limit(4).toArray();
@@ -67,7 +67,7 @@ async function run() {
       }
     });
 
-    // --- MY ACTIVITIES ---
+   
     app.get("/api/my-activities", async (req, res) => {
       try {
         const result = await db.collection("userActivities").find().toArray();
@@ -77,11 +77,11 @@ async function run() {
       }
     });
 
-    // --- STATS (Static Example) ---
+   
     app.get("/api/stats", (req, res) => res.json({ users: 10 }));
 
-    // MongoDB ping check
-    await db.command({ ping: 1 });
+  
+    // await db.command({ ping: 1 });
     console.log(" Ping successful! MongoDB connected.");
   } catch (error) {
     console.error(" MongoDB connection failed:", error);
@@ -90,7 +90,7 @@ async function run() {
 
 run().catch(console.dir);
 
-//  Simple test route
+
 app.get("/hello", (req, res) => {
   res.send("How are you");
 });
